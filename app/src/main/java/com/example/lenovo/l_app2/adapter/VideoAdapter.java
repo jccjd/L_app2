@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.lenovo.l_app2.R;
 import com.example.lenovo.l_app2.bean.Video;
+import com.example.lenovo.l_app2.ui.VideoFragment;
 import wseemann.media.FFmpegMediaMetadataRetriever;
 
 import java.util.List;
@@ -31,4 +32,6 @@ public class VideoAdapter extends BaseQuickAdapter<Video,BaseViewHolder> {
         mmr.release();
         return  b;
     }
+
+
 }

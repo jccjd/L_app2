@@ -1,6 +1,7 @@
 package com.example.lenovo.l_app2.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,11 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.lenovo.l_app2.R;
 import com.example.lenovo.l_app2.adapter.VideoAdapter;
 import com.example.lenovo.l_app2.net.HttpResult;
 import com.example.lenovo.l_app2.net.RetrofitUtil;
 import com.example.lenovo.l_app2.bean.Video;
+import com.example.lenovo.l_app2.ui.activity.VideoActivity;
 import com.youth.banner.Banner;
 
 import retrofit2.Call;
@@ -26,7 +30,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VideoFragment extends Fragment {
+public class VideoFragment extends Fragment implements BaseQuickAdapter.OnItemClickListener {
     public static final String TAG = "VideoFragment";
     private View mView;
     private RecyclerView mRecyclerView;
@@ -51,13 +55,15 @@ public class VideoFragment extends Fragment {
         mVideos = new ArrayList<>();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mVideoAdapter);
+        mVideoAdapter.setOnItemClickListener(this);
         RetrofitUtil.getVideo(new Callback<HttpResult<List<Video>>>() {
             @Override
             public void onResponse(Call<HttpResult<List<Video>>> call, Response<HttpResult<List<Video>>> response) {
-                List<Video> videoList = response.body().getData();
+
+            /*    List<Video> videoList = response.body().getData();
                 for (Video video : videoList) {
                     Log.i(TAG,video.toString());
-                }
+                }*/
                 mVideoAdapter.addData(response.body().getData());
             }
 
@@ -72,4 +78,9 @@ public class VideoFragment extends Fragment {
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.recycler_view);
     }
 
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Intent intent = new Intent(getActivity(), VideoActivity.class);
+        startActivity(intent);
+    }
 }
