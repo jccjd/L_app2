@@ -11,6 +11,7 @@ import java.util.List;
 
 public class RetrofitUtil {
     public static void getNews(Callback<HttpResult<List<News>>> callback) {
+        //填写下列代码
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://10.0.2.2")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

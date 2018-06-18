@@ -8,6 +8,7 @@ import retrofit2.http.GET;
 import java.util.List;
 
 public interface ApiService {
+    //填写代码
     @GET("getNews.php")
     Call<HttpResult<List<News>>> getNews();
 

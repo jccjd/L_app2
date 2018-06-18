@@ -35,11 +35,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         mFragments.add(new VideoFragment());
         mFragments.add(new ImageFragment());
 
+        //填写代码
         mNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_white_24dp, "News"))
                 .addItem(new BottomNavigationItem(R.drawable.ic_favorite_white_24dp, "Video"))
                 .addItem(new BottomNavigationItem(R.drawable.ic_github_circle_white_24dp, "Image"))
                 .setMode(BottomNavigationBar.MODE_FIXED).initialise();
 
+        //填写代码
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
