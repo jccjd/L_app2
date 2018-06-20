@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
             }
         });
         viewPager.addOnPageChangeListener(this);
+        mNavigationBar.setTabSelectedListener(this);
         viewPager.setCurrentItem(0);
     }
 
