@@ -31,10 +31,9 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class VideoFragment extends Fragment implements BaseQuickAdapter.OnItemClickListener {
-    public static final String TAG = "VideoFragment";
     private View mView;
     private RecyclerView mRecyclerView;
-    private List<Video> mVideos;
+    private List<Video> mVideo;
     private VideoAdapter mVideoAdapter;
     public VideoFragment() {
         // Required empty public constructor
@@ -52,18 +51,14 @@ public class VideoFragment extends Fragment implements BaseQuickAdapter.OnItemCl
     }
 
     private void init() {
-        mVideos = new ArrayList<>();
+        mVideo = new ArrayList<>();
+
+        mVideoAdapter = new VideoAdapter(R.layout.item_view_video,mVideo);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mVideoAdapter);
-        mVideoAdapter.setOnItemClickListener(this);
         RetrofitUtil.getVideo(new Callback<HttpResult<List<Video>>>() {
             @Override
             public void onResponse(Call<HttpResult<List<Video>>> call, Response<HttpResult<List<Video>>> response) {
-
-            /*    List<Video> videoList = response.body().getData();
-                for (Video video : videoList) {
-                    Log.i(TAG,video.toString());
-                }*/
                 mVideoAdapter.addData(response.body().getData());
             }
 
@@ -72,15 +67,22 @@ public class VideoFragment extends Fragment implements BaseQuickAdapter.OnItemCl
 
             }
         });
+        mVideoAdapter.setOnItemClickListener(this);
     }
 
     private void initView() {
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.recycler_view);
     }
 
+
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(getActivity(), VideoActivity.class);
+        Video video = (Video) adapter.getItem(position);
+
+        Intent intent = new Intent(getContext(),VideoActivity.class);
+        intent.putExtra("video_url",video.getUrl());
+        intent.putExtra("video_name",video.getName());
+        intent.putExtra("video_thumb_url",video.getVideoThumbUrl());
         startActivity(intent);
     }
 }

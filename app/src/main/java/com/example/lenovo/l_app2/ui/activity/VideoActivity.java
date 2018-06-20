@@ -1,5 +1,6 @@
 package com.example.lenovo.l_app2.ui.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,20 +13,9 @@ import com.example.lenovo.l_app2.bean.Video;
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 
-public class VideoActivity extends AppCompatActivity implements View.OnClickListener {
-    private JZVideoPlayerStandard mJZVideoPlayerStandard;
-    private Video mVideo;
-    private ImageView mFavoriteImageView;
-    public void onEventBusReceiver(Video video){
-        mVideo=video;
-        mJZVideoPlayerStandard.setUp(mVideo.getUrl()
-                , JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, mVideo.getName());
 
-        Glide.with(this)
-                .load(video.getVideoThumbUrl())
-                .into(mJZVideoPlayerStandard.thumbImageView);
-
-    }
+public class VideoActivity extends AppCompatActivity  {
+    private JZVideoPlayerStandard jzVideoPlayerStandard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +26,20 @@ public class VideoActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void init() {
-        mFavoriteImageView.setOnClickListener(this);
+        Intent intent = getIntent();
+        String videoName = intent.getStringExtra("video_name");
+        String videoUrl = intent.getStringExtra("video_url");
+        jzVideoPlayerStandard.setUp(videoUrl,JZVideoPlayer.SCREEN_WINDOW_NORMAL,videoName);
     }
 
     private void initView() {
-        mJZVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.player_video);
-        mFavoriteImageView=(ImageView)findViewById(R.id.iv_favorite);
+        jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.player_video);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JZVideoPlayer.releaseAllVideos();
     }
 
     @Override
@@ -51,25 +49,4 @@ public class VideoActivity extends AppCompatActivity implements View.OnClickList
         }
         super.onBackPressed();
     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        JZVideoPlayer.releaseAllVideos();
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.iv_favorite:
-//                DBUtil.getInstance(this).insert(mVideo);
-//                mFavoriteImageView.setImageResource(R.drawable.ico_favorite_selected);
-//                break;
-//        }
-    }
-
 }
